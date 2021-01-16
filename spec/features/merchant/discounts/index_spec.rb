@@ -29,7 +29,14 @@ RSpec.describe "As a merchant" do
 
     it " each bulk discount listed includes a link to its show page" do
       click_link("discount-#{@discount1.id}")
-      expect(current_path).to eq(merchant_discount_path(@merchant1.id, @discount1.id))
+      expect(current_path).to eq(merchant_discount_path(@merchant1, @discount1))
+    end
+
+    it "and I click the 'New Discount' link then I am taken to a new page where I see a form to add a new bulk discount" do
+      within("#create-discount-sec") do
+        click_link("New Discount")
+        expect(current_path).to eq(new_merchant_discount_path(@merchant1))
+      end
     end
   end
 end
