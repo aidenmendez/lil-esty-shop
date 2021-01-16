@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_015832) do
+ActiveRecord::Schema.define(version: 2021_01_16_194723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_01_16_015832) do
   end
 
   create_table "discounts", force: :cascade do |t|
-    t.integer "percent"
+    t.decimal "percent", precision: 3, scale: 2
     t.integer "threshold"
     t.bigint "merchant_id"
     t.datetime "created_at", null: false
