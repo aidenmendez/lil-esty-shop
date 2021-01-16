@@ -25,7 +25,7 @@ RSpec.describe "As a merchant" do
       end
 
       expect(current_path).to eq(merchant_discounts_path(@merchant1))
-      save_and_open_page
+
       expect(page).to have_content(@discount2.percent)
       expect(page).to have_content(@discount2.threshold)
     end
