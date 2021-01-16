@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchant dashboard' do
+RSpec.describe 'As a merchant, when I visit my merchant dashboard' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -114,5 +114,10 @@ RSpec.describe 'merchant dashboard' do
 
   it "shows the date that the invoice was created in this format: Monday, July 18, 2019" do
     expect(page).to have_content(@invoice_1.created_at.strftime("%A, %B %-d, %Y"))
+  end
+
+  it "then I see a link to view all my discounts" do
+    click_link("Discounts")
+    expect(current_path).to eq(merchant_discounts_path(@merchant1))
   end
 end
