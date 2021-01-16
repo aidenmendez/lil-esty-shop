@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "As a merchant" do
-  describe "when I visit a discount show page" do
+  describe "when I visit a discount's show page" do
     before :each do
       @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -15,6 +15,15 @@ RSpec.describe "As a merchant" do
     it "then I see the bulk discounts quantity and price" do
       expect(page).to have_content("Rate: #{@discount1.percent * 100}%")
       expect(page).to have_content("Minimum quantity: #{@discount1.threshold} items")
+    end
+
+    it "then I see a link to edit the bulk discount" do
+      expect(page).to have_content("Edit")
+    end
+
+    it "when I click the edit link" do
+      click_link("Edit")
+      expect(current_path).to eq(edit_merchant_discount_path(@merchant1, @discount1))
     end
   end
 end
