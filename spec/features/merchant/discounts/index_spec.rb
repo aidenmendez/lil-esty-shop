@@ -14,22 +14,22 @@ RSpec.describe "As a merchant" do
 
     it "I see all of my bulk discounts including their percentage discount and quantity thresholds" do
       within("#section-#{@discount1.id}") do
-        expect(page).to have_content(@discount1.percentage)
+        expect(page).to have_content(@discount1.percent)
         expect(page).to have_content(@discount1.threshold)
       end
       within("#section-#{@discount2.id}") do
-        expect(page).to have_content(@discount2.percentage)
+        expect(page).to have_content(@discount2.percent)
         expect(page).to have_content(@discount2.threshold)
       end
       within("#section-#{@discount3.id}") do
-        expect(page).to have_content(@discount3.percentage)
+        expect(page).to have_content(@discount3.percent)
         expect(page).to have_content(@discount3.threshold)
       end
     end
 
     it " each bulk discount listed includes a link to its show page" do
-      click_link(@discount1.name)
-      expect(current_path).to eq(merchant_discount_path(@merchant, @discount1))
+      click_link("discount-#{@discount1.id}")
+      expect(current_path).to eq(merchant_discount_path(@merchant1.id, @discount1.id))
     end
   end
 end
