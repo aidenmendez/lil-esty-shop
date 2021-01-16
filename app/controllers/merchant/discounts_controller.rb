@@ -5,12 +5,17 @@ class Merchant::DiscountsController < ApplicationController
   end
 
   def show
+    @merchant = Merchant.find(params[:merchant_id])
     @discount = Discount.find(params[:id])
     @percentage = @discount.percent * 100
   end
 
   def new
 
+  end
+
+  def edit
+    
   end
 
   def create
