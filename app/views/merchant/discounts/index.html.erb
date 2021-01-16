@@ -1,0 +1,6 @@
+<h1> <%= @merchant.name %> Discounts</h1>
+<h2> Current Bulk Discounts</h2>
+<% @discounts.each do |d| %>
+  <%= link_to  %>
+  <h4>discount-<%= d.id %></h4>
+<% end %>
