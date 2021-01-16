@@ -5,7 +5,7 @@ RSpec.describe "As a merchant" do
     before :each do
       @merchant1 = Merchant.create!(name: 'Hair Care')
       @discount1 = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@merchant1.id)
-      
+      @discount2 = Discount.new(percent: 0.5, threshold: 50)
       visit new_merchant_discount_path(@merchant1)
     end
 
@@ -25,8 +25,9 @@ RSpec.describe "As a merchant" do
       end
 
       expect(current_path).to eq(merchant_discounts_path(@merchant1))
-
-      expect
+      save_and_open_page
+      expect(page).to have_content(@discount2.percent)
+      expect(page).to have_content(@discount2.threshold)
     end
   end
 end
