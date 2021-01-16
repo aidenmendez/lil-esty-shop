@@ -4,8 +4,8 @@
 <%= form_with(url: merchant_discounts_path, method: "post") do |f| %>
   <%= f.label :percent, "Discount percentage (as a decimal):" %>
   <%= f.text_field :percent %><br/>
-  <%= f.label :quantity, "Minimum item threshold:" %><br/>
-  <%= f.text_field :quantity %><br/>
+  <%= f.label :threshold, "Minimum item threshold:" %><br/>
+  <%= f.text_field :threshold %><br/>
   <%= f.submit "Submit" %>
 <% end %>
 </section>
