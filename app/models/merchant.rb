@@ -19,9 +19,16 @@ class Merchant < ApplicationRecord
     .limit(5)
   end
 
+  # def ordered_items_to_ship
+  #   items = Item.joins(:invoice_items)
+  #                  .where("invoice_items.status = 0 OR invoice_items.status = 1")
+  # end
+
   def ordered_items_to_ship
-    items = Item.joins(:invoice_items)
-                   .where("invoice_items.status = 0 OR invoice_items.status = 1")
+      items.joins(:invoice_items)
+      .select('items.*')
+      .where("invoice_items.status = 0 OR invoice_items.status = 1")
+      .order(:created_at)
   end
 
   def top_5_items
