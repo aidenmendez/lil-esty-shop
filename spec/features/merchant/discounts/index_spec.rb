@@ -55,7 +55,7 @@ RSpec.describe "As a merchant" do
 
     it "when I click the delete link next to a discount I am redirected to the discount index page and I no longer see the deleted discount" do
       within ("#section-#{@discount2.id}") do
-        click_link("Delete")
+        click_button("Delete")
       end
 
       expect(current_path).to eq(merchant_discounts_path(@merchant1))
