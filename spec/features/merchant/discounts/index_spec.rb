@@ -7,7 +7,7 @@ RSpec.describe "As a merchant" do
 
       @discount1 = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@merchant1.id)
       @discount2 = Discount.create!(percent: 0.4, threshold: 15, merchant_id:@merchant1.id)
-      @discount3 = Discount.create!(percent: 0.5, threshold: 30, merchant_id:@merchant1.id)
+      @discount3 = Discount.create!(percent: 0.5, threshold: 30, merchant_id:@merchant2.id)
 
       visit merchant_discounts_path(@merchant1)
     end
