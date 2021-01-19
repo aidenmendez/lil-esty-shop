@@ -87,5 +87,28 @@ describe Item do
       expect(@item_1.get_discount(@ii_1.quantity)).not_to include([@discount2, @discount3, @discount4])
       expect(@item_2.get_discount(@ii_2.quantity)).not_to include([@discount1, @discount2, @discount3])
     end
+
+    it "display_discount" do
+      @merchant1 = Merchant.create!(name: 'Hair Care')
+      @merchant2 = Merchant.create!(name: 'Jewelry')
+
+      @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+
+      @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
+      @item_2 = Item.create!(name: "Conditioner", description: "This makes your hair shiny", unit_price: 8, merchant_id: @merchant2.id, status: 1)
+
+      @invoice_1 = Invoice.create!(merchant_id: @merchant1.id, customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+
+      @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 9, unit_price: 10, status: 2)
+      @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_2.id, quantity: 20, unit_price: 5, status: 1)
+
+      @discount1 = Discount.create!(percent: 0.1, threshold: 3, merchant_id:@merchant1.id)
+      # @discount2 = Discount.create!(percent: 0.2, threshold: 10, merchant_id:@merchant1.id)
+      # @discount3 = Discount.create!(percent: 0.3, threshold: 5, merchant_id:@merchant2.id)
+      # @discount4 = Discount.create!(percent: 0.6, threshold: 20, merchant_id:@merchant2.id)
+
+      expect(@item_1.display_discount(@ii_1.quantity)).to eq("discount-#{@discount1.id}")
+      expect(@item_2.display_discount(@ii_2.quantity)).to eq("no discounts available")
+    end
   end
 end
