@@ -15,6 +15,7 @@ describe Merchant do
 
   describe 'instance methods' do
     before :each do
+      Discount.destroy_all
       @m1 = Merchant.create!(name: 'Merchant 1')
       @m2 = Merchant.create!(name: 'Merchant 2')
       @m3 = Merchant.create!(name: 'Merchant 3', status: 1)
