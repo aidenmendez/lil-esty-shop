@@ -21,4 +21,8 @@ class Item < ApplicationRecord
     .created_at
     .to_date
   end
+
+  def get_discount(quantity)
+    merchant.discounts.where("discounts.threshold <= ?", quantity).order(percent: :desc).limit(1)
+  end
 end

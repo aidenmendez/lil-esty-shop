@@ -12,6 +12,22 @@ class Invoice < ApplicationRecord
   enum status: [:cancelled, :in_progress, :complete]
 
   def total_revenue
-    invoice_items.sum("unit_price * quantity")
+    total = 0
+
+    invoice_items.each do |inv_item|
+      item = inv_item.item
+
+      if item.get_discount(inv_item.quantity).any?
+        discount_percent = item.get_discount(inv_item.quantity).pluck(:percent).first
+        discount_price = inv_item.unit_price * (1 - discount_percent)
+        revenue = inv_item.quantity * discount_price
+        total += revenue
+      else
+        revenue = inv_item.quantity * inv_item.unit_price
+        total += revenue
+      end
+    end
+
+    total
   end
 end
