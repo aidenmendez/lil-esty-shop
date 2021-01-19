@@ -32,7 +32,11 @@ RSpec.describe 'invoices show' do
 
     @invoice_8 = Invoice.create!(merchant_id: @merchant2.id, customer_id: @customer_6.id, status: 1)
 
+    # for testing discounts from multiple merchants
+    @invoice_9 = Invoice.create!(merchant_id: @merchant2.id, customer_id: @customer_2.id, status: 1)    
+
     @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 9, unit_price: 10, status: 2)
+    @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 12, unit_price: 6, status: 1)
     @ii_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_1.id, quantity: 1, unit_price: 10, status: 2)
     @ii_3 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_2.id, quantity: 2, unit_price: 8, status: 2)
     @ii_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_3.id, quantity: 3, unit_price: 5, status: 1)
@@ -41,7 +45,11 @@ RSpec.describe 'invoices show' do
     @ii_8 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_8.id, quantity: 1, unit_price: 5, status: 1)
     @ii_9 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_4.id, quantity: 1, unit_price: 1, status: 1)
     @ii_10 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_5.id, quantity: 1, unit_price: 1, status: 1)
-    @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 12, unit_price: 6, status: 1)
+
+    # for testing discounts from multiple merchants
+    @ii_12 = InvoiceItem.create!(invoice_id: @invoice_9.id, item_id: @item_5.id, quantity: 20, unit_price: 30, status: 1)
+    @ii_13 = InvoiceItem.create!(invoice_id: @invoice_9.id, item_id: @item_6.id, quantity: 20, unit_price: 50, status: 1)
+    @ii_14 = InvoiceItem.create!(invoice_id: @invoice_9.id, item_id: @item_3.id, quantity: 12, unit_price: 100, status: 1)
 
     @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
     @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
@@ -78,13 +86,7 @@ RSpec.describe 'invoices show' do
     expect(page).to_not have_content(@ii_4.unit_price)
 
   end
-
-  it "shows the total revenue for this invoice" do
-    visit merchant_invoice_path(@merchant1, @invoice_1)
-
-    expect(page).to have_content(@invoice_1.total_revenue)
-  end
-
+  
   it "shows a select field to update the invoice status" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
     
@@ -93,7 +95,29 @@ RSpec.describe 'invoices show' do
       click_button "Update Invoice"
       expect(page).to have_content("cancelled")
       expect(page).to_not have_content("in progress")
-     end
+    end
+  end
+  
+  it "shows the total revenue for this invoice including discounts" do
+    @discount = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@merchant1.id)
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+  
+    expect(page).to have_content("Total Revenue: #{@invoice_1.total_revenue}")
   end
 
+  it "other merchant's discounts aren't applied" do
+    @discount = Discount.create!(percent: 0.1, threshold: 5, merchant_id:@merchant2.id)
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+
+    expect(page).to have_content("Total Revenue: #{@invoice_1.total_revenue}")
+  end
+
+  it "can discount items from separate merchants on the same invoice" do
+    @discount1 = Discount.create!(percent: 0.1, threshold: 3, merchant_id:@merchant1.id)
+    @discount2 = Discount.create!(percent: 0.3, threshold: 5, merchant_id:@merchant2.id)
+
+    visit merchant_invoice_path(@merchant2, @invoice_9)
+    
+    expect(page).to have_content("Total Revenue: #{@invoice_9.total_revenue}")
+  end
 end

@@ -4,6 +4,7 @@ RSpec.describe "As a merchant" do
   describe "when I visit my bulk discounts index page" do
     before(:each) do
       @merchant1 = Merchant.create!(name: 'Hair Care')
+      # @merchant2 = Merchant.create!(name: 'Jewelry')
 
       @discount1 = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@merchant1.id)
       @discount2 = Discount.create!(percent: 0.4, threshold: 15, merchant_id:@merchant1.id)
@@ -41,15 +42,15 @@ RSpec.describe "As a merchant" do
 
     it "next to each bulk discount I see a link to delete it" do
       within ("#section-#{@discount1.id}") do
-        expect(page).to have_content("Delete")
+        expect(page).to have_button("Delete")
       end
 
       within ("#section-#{@discount2.id}") do
-        expect(page).to have_content("Delete")
+        expect(page).to have_button("Delete")
       end
 
       within ("#section-#{@discount3.id}") do
-        expect(page).to have_content("Delete")
+        expect(page).to have_button("Delete")
       end
     end
 
