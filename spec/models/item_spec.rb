@@ -103,12 +103,9 @@ describe Item do
       @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_2.id, quantity: 20, unit_price: 5, status: 1)
 
       @discount1 = Discount.create!(percent: 0.1, threshold: 3, merchant_id:@merchant1.id)
-      # @discount2 = Discount.create!(percent: 0.2, threshold: 10, merchant_id:@merchant1.id)
-      # @discount3 = Discount.create!(percent: 0.3, threshold: 5, merchant_id:@merchant2.id)
-      # @discount4 = Discount.create!(percent: 0.6, threshold: 20, merchant_id:@merchant2.id)
-
-      expect(@item_1.display_discount(@ii_1.quantity)).to eq("discount-#{@discount1.id}")
-      expect(@item_2.display_discount(@ii_2.quantity)).to eq("no discounts available")
+      
+      expect(@item_1.disc_id(@ii_1.quantity)).to eq(@discount1.id)
+      expect(@item_2.disc_id(@ii_2.quantity)).to eq(nil)
     end
   end
 end

@@ -122,14 +122,13 @@ RSpec.describe 'invoices show' do
   end
 
   it "can show link to each item's discount if applicable" do
-    # @discount1 = Discount.create!(percent: 0.1, threshold: 3, merchant_id:@merchant1.id)
     @discount2 = Discount.create!(percent: 0.3, threshold: 5, merchant_id:@merchant2.id)
 
     visit merchant_invoice_path(@merchant2, @invoice_9)
 
     within("#item-#{@item_3.id}-row") do
       expect(page).to have_content(@item_3.name)
-      expect(page).to have_content("no discounts available")
+      expect(page).to have_content("no discounts applied")
     end
 
     within("#item-#{@item_5.id}-row") do
