@@ -25,4 +25,12 @@ class Item < ApplicationRecord
   def get_discount(quantity)
     merchant.discounts.where("discounts.threshold <= ?", quantity).order(percent: :desc).limit(1)
   end
+
+  def disc_id(quantity)
+    if get_discount(quantity).blank?
+      nil
+    else
+      get_discount(quantity).first.id
+    end
+  end
 end
