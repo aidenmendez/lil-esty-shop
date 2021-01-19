@@ -105,6 +105,13 @@ RSpec.describe 'invoices show' do
     expect(page).to have_content("Total Revenue: #{@invoice_1.total_revenue}")
   end
 
+  it "shows the total discounted amount" do
+    @discount = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@merchant1.id)
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+
+    expect(page).to have_content("Discount Amount Applied: #{@invoice_1.total_discounted}")
+  end
+
   it "other merchant's discounts aren't applied" do
     @discount = Discount.create!(percent: 0.1, threshold: 5, merchant_id:@merchant2.id)
     visit merchant_invoice_path(@merchant1, @invoice_1)

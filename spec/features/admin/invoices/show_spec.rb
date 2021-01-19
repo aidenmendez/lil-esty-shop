@@ -69,5 +69,13 @@ describe 'Admin Invoices Index Page' do
       expect(@i1.status).to eq('complete')
     end
   end
+
+  it "I see that the total revenue includes bulk discounts in the calculation" do
+    @discount = Discount.create!(percent: 0.2, threshold: 3, merchant_id:@m1.id)
+    visit merchant_invoice_path(@m1, @i1)
+  
+    expect(page).to have_content("Total Revenue: #{@i1.total_revenue}")
+    expect(page).to have_content("Discount Amount Applied: #{@i1.total_discounted}")
+  end
 end
 
