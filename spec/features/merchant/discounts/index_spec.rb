@@ -15,15 +15,15 @@ RSpec.describe "As a merchant" do
 
     it "I see all of my bulk discounts including their percentage discount and quantity thresholds" do
       within("#section-#{@discount1.id}") do
-        expect(page).to have_content(@discount1.percent)
+        expect(page).to have_content("#{@discount1.percent * 100}%")
         expect(page).to have_content(@discount1.threshold)
       end
       within("#section-#{@discount2.id}") do
-        expect(page).to have_content(@discount2.percent)
+        expect(page).to have_content("#{@discount2.percent * 100}%")
         expect(page).to have_content(@discount2.threshold)
       end
       within("#section-#{@discount3.id}") do
-        expect(page).to have_content(@discount3.percent)
+        expect(page).to have_content("#{@discount3.percent * 100}%")
         expect(page).to have_content(@discount3.threshold)
       end
     end
@@ -62,12 +62,12 @@ RSpec.describe "As a merchant" do
       expect(current_path).to eq(merchant_discounts_path(@merchant1))
 
       within("#section-#{@discount1.id}") do
-        expect(page).to have_content(@discount1.percent)
+        expect(page).to have_content("#{@discount1.percent * 100}%")
         expect(page).to have_content(@discount1.threshold)
       end
 
       within("#section-#{@discount3.id}") do
-        expect(page).to have_content(@discount3.percent)
+        expect(page).to have_content("#{@discount3.percent * 100}%")
         expect(page).to have_content(@discount3.threshold)
       end
 
