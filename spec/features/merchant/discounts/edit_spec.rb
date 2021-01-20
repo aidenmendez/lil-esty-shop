@@ -26,5 +26,28 @@ RSpec.describe "As a merchant" do
       expect(page).to have_content("Rate: #{@discount1.percent * 100}%")
       expect(page).to have_content("Minimum quantity: #{@discount1.threshold} items")
     end
+
+    it "can't accept numbers greater than 1.0" do
+      fill_in("Discount percentage (as a decimal):", with: 1.5)
+      fill_in("Minimum item threshold:", with: 50)
+      click_button("Update")
+
+      expect(page).to have_content("Discount not updated. Ensure percent is a value between 0 and 1.")
+    end
+
+    it "can't accept numbers less than 0" do
+      fill_in("Discount percentage (as a decimal):", with: -0.5)
+      fill_in("Minimum item threshold:", with: 50)
+      click_button("Update")
+      expect(page).to have_content("Discount not updated. Ensure percent is a value between 0 and 1.")
+    end
+    
+    it "threshold must be greater than 0" do
+      fill_in("Discount percentage (as a decimal):", with: 0.5)
+      fill_in("Minimum item threshold:", with: -20)
+      click_button("Update")
+      
+      expect(page).to have_content("Discount not updated. Ensure threshold is greater than 0.")
+    end
   end
 end

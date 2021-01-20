@@ -22,10 +22,10 @@ class Merchant::DiscountsController < ApplicationController
   def update
     merchant = Merchant.find(params[:merchant_id])
     discount = Discount.find(params[:id])
-    if params[:discount][:percent] > 1 || params[:discount][:percent] <= 0
-      flash.now[:notice] = "Discount not updated. Ensure percent is a value between 0 and 1 and threshold is greater than 0."
+    if params[:discount][:percent].to_f > 1 || params[:discount][:percent].to_f <= 0
+      flash.now[:notice] = "Discount not updated. Ensure percent is a value between 0 and 1."
       render :new
-    elsif params[:discount][:threshold] <= 0
+    elsif params[:discount][:threshold].to_f <= 0
       flash.now[:notice] = "Discount not updated. Ensure threshold is greater than 0."
       render :new
     else 
@@ -46,7 +46,7 @@ class Merchant::DiscountsController < ApplicationController
       render :new
     else 
       Discount.create!(percent: params[:percent], threshold: params[:threshold], merchant_id: merchant.id)
-      redirect_to merchant_discount_path(merchant, discount)
+      redirect_to (merchant_discounts_path(merchant))
     end
   end
 

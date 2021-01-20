@@ -2,8 +2,8 @@
 
 <%= form_with model: @discount, url: merchant_discount_path(@merchant, @discount) do |d| %>
   <%= d.label :percent, "Discount percentage (as a decimal):" %>
-  <%= d.text_field :percent, value: @discount.percent %><br/>
+  <%= d.number_field :percent, value: @discount.percent %><br/>
   <%= d.label :threshold, "Minimum item threshold:" %><br/>
-  <%= d.text_field :threshold, value: @discount.threshold %><br/>
+  <%= d.number_field :threshold, value: @discount.threshold %><br/>
   <%= d.submit "Update" %>
 <% end %>

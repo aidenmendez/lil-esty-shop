@@ -36,7 +36,7 @@ RSpec.describe "As a merchant" do
         fill_in("Minimum item threshold:", with: 50)
         click_button("Submit")
       end
-      expect(flash[:notice])
+      expect(page).to have_content("Discount not created. Ensure percent is a value between 0 and 1.")
     end
 
     it "can't accept numbers less than 0" do
@@ -45,8 +45,18 @@ RSpec.describe "As a merchant" do
         fill_in("Minimum item threshold:", with: 50)
         click_button("Submit")
       end
-      save_and_open_page
+
       expect(page).to have_content("Discount not created. Ensure percent is a value between 0 and 1.")
+    end
+
+    it "threshold must be greater than 0" do
+      within("#new-disc-form") do
+        fill_in("Discount percentage (as a decimal):", with: 0.5)
+        fill_in("Minimum item threshold:", with: -20)
+        click_button("Submit")
+      end
+
+      expect(page).to have_content("Discount not created. Ensure threshold is greater than 0.")
     end
   end
 end
