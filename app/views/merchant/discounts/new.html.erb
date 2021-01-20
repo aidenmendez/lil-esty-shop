@@ -2,10 +2,10 @@
 
 <section id="new-disc-form">
 <%= form_with(url: merchant_discounts_path, method: "post") do |f| %>
-  <%= f.label :percent, "Discount percentage (as a decimal):" %>
-  <%= f.text_field :percent %><br/>
+  <%= f.label :percent, "Discount percentage (as a decimal):"%>
+  <%= f.number_field :percent  %><br/>
   <%= f.label :threshold, "Minimum item threshold:" %><br/>
-  <%= f.text_field :threshold %><br/>
+  <%= f.number_field :threshold %><br/>
   <%= f.submit "Submit" %>
 <% end %>
 </section>
