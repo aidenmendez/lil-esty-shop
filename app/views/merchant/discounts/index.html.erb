@@ -9,8 +9,8 @@
   <h3><%= link_to "Discount #{d.id}", merchant_discount_path(@merchant.id, d.id) %></h3>
   <%= button_to "Delete", merchant_discount_path(@merchant, d), method: :delete %>
     <ul>
-      <li><%= d.percent %></li>
-      <li><%= d.threshold %></li>
+      <li>Percent: <%= d.percent * 100 %>%</li>
+      <li>Minimum quantity: <%= d.threshold %> units</li>
     </ul>
   </section>
 <% end %>
